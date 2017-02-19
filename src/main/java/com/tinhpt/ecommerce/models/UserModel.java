@@ -3,7 +3,7 @@ package com.tinhpt.ecommerce.models;
 /**
  * Created by PhamTinh on 2/17/2017.
  */
-public class User {
+public class UserModel {
     private int id;
     private String email;
     private String password;
@@ -12,16 +12,6 @@ public class User {
     private String address;
     private String role;
     private String username;
-
-    public User(String email, String password, String name, String phone, String address, String role, String username) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.phone = phone;
-        this.address = address;
-        this.role = role;
-        this.username = username;
-    }
 
     public int getId() {
         return id;
