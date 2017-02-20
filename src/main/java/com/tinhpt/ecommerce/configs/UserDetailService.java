@@ -1,6 +1,6 @@
 package com.tinhpt.ecommerce.configs;
 
-import com.tinhpt.ecommerce.models.User;
+import com.tinhpt.ecommerce.models.UserModel;
 import com.tinhpt.ecommerce.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,21 +25,21 @@ public class UserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            User user = userService.findByUsername(username);
-            if (user == null) {
-                throw new UsernameNotFoundException("User " + username + " not found");
+            UserModel userModel = userService.findByUsername(username);
+            if (userModel == null) {
+                throw new UsernameNotFoundException("UserModel " + username + " not found");
             }
             List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(user.getRole());
+            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_" + userModel.getRole());
             grantedAuthorities.add(grantedAuthority);
 
             UserDetails userDetails = new org.springframework.security.core.userdetails.User(
-                    user.getUsername(), user.getPassword(), grantedAuthorities
+                    userModel.getUsername(), userModel.getPassword(), grantedAuthorities
             );
 
             return userDetails;
         } catch (Exception e) {
-            throw new UsernameNotFoundException("User " + username + " not found");
+            throw new UsernameNotFoundException("UserModel " + username + " not found");
         }
     }
 }

@@ -17,6 +17,19 @@ public class User {
     private String role;
     private String username;
 
+    public User(){
+
+    }
+
+    public User(String email, String name, String phone, String address, String username) {
+        this.email = email;
+        this.name = name;
+        this.phone = phone;
+        this.address = address;
+        this.username = username;
+        this.role = "USER";
+    }
+
     @Id
     @Column(name = "id")
     public int getId() {
