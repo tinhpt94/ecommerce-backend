@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 
 /**
  * Created by PhamTinh on 2/17/2017.
@@ -33,25 +34,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity.csrf().disable();
-
-        httpSecurity.authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/users").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/users/**").hasRole("ADMIN")
-                .and()
-                .formLogin()
-                .loginProcessingUrl("/api/login")
-                .defaultSuccessUrl("/api/me")
-                .usernameParameter("username")
-                .passwordParameter("password")
-                .and()
+        httpSecurity
+                .anonymous().disable()
+                .addFilterBefore(new CorsFilter(), ChannelProcessingFilter.class)
+                /*.formLogin()
+                    .loginProcessingUrl("/api/login")
+                    .defaultSuccessUrl("/api/me")
+                    .usernameParameter("username")
+                    .passwordParameter("password")
+                    .and()*/
                 .exceptionHandling()
-                .accessDeniedPage("/api/403")
+                    .accessDeniedPage("/api/403")
                 .and()
                 .logout()
-                .logoutUrl("/api/logout")
-                .logoutSuccessUrl("/api/hello")
-                .deleteCookies("JSESSIONID");
+                    .logoutUrl("/api/logout")
+                    .logoutSuccessUrl("/api/hello")
+                    .deleteCookies("JSESSIONID")
+                .and()
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/api/users").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/users/**").hasRole("ADMIN");
     }
 }
 
