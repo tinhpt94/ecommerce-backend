@@ -34,7 +34,8 @@ public class UserDetailService implements UserDetailsService {
             grantedAuthorities.add(grantedAuthority);
 
             UserDetails userDetails = new org.springframework.security.core.userdetails.User(
-                    userModel.getUsername(), userModel.getPassword(), grantedAuthorities
+                    userModel.getUsername(), userModel.getPassword(), true, true, true, true,
+                    grantedAuthorities
             );
 
             return userDetails;
