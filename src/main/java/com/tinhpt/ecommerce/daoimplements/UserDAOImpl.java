@@ -13,6 +13,14 @@ import org.springframework.stereotype.Repository;
 public class UserDAOImpl extends AbstractDAO<User, Long> implements UserDAO {
 
     @Override
+    public User findByUserNamePassword(String userName, String password) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq("username", userName));
+        criteria.add(Restrictions.eq("password", password));
+        return (User) criteria.uniqueResult();
+    }
+
+    @Override
     public User findByUsername(String username) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.eq("username", username));

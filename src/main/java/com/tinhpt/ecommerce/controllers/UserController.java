@@ -1,13 +1,16 @@
 package com.tinhpt.ecommerce.controllers;
 
+import com.tinhpt.ecommerce.configs.UserDetailService;
 import com.tinhpt.ecommerce.models.Message;
 import com.tinhpt.ecommerce.models.UserModel;
 import com.tinhpt.ecommerce.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -22,6 +25,9 @@ import java.util.List;
 public class UserController {
     @Autowired
     UserService userService;
+
+    @Autowired
+    UserDetailService userDetailService;
 
     @RequestMapping( value = "/me", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -59,5 +65,24 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public Message logOut(){
         return new Message("message", "Logout success", "info");
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity login(@RequestBody UserModel userModel) {
+        UserModel result = userService.findByUserNamePassword(userModel.getUsername(), userModel.getPassword());
+        if (result != null) {
+            UserDetails userDetails = userDetailService.loadUserByUsername(result.getUsername());
+            Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message("message", "Invalid username or password", "error"));
+        }
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.DELETE)
+    public ResponseEntity logout() {
+        SecurityContextHolder.getContext().setAuthentication(null);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message("message", "Logout successfully!", "info"));
     }
 }

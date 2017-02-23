@@ -55,4 +55,12 @@ public class UserServiceImpl implements UserService{
         user.setPassword(encoder.encode(userModel.getPassword()));
         userDAO.persist(user);
     }
+
+    @Override
+    public UserModel findByUserNamePassword(String username, String password) {
+        User user = userDAO.findByUserNamePassword(username, password);
+        if (user != null) {
+            return modelMapper.map(user, UserModel.class);
+        } else return null;
+    }
 }

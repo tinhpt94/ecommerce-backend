@@ -11,4 +11,5 @@ public interface UserService {
     UserModel findByUsername(String username);
     List<UserModel> findAll();
     void persist(UserModel userModel);
+    UserModel findByUserNamePassword(String username, String password);
 }
