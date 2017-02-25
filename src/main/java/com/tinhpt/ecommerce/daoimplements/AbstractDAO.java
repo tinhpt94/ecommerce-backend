@@ -56,6 +56,6 @@ public class AbstractDAO<T, PK extends Serializable> {
     }
 
     public List<T> findAll() {
-        return createEntityCriteria().list();
+        return (List<T>) createEntityCriteria().list();
     }
 }

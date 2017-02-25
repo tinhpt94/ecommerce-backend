@@ -1,11 +1,13 @@
 package com.tinhpt.ecommerce.controllers;
 
 import com.tinhpt.ecommerce.configs.UserDetailService;
+import com.tinhpt.ecommerce.models.Credential;
 import com.tinhpt.ecommerce.models.Message;
 import com.tinhpt.ecommerce.models.UserModel;
 import com.tinhpt.ecommerce.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,14 +30,6 @@ public class UserController {
 
     @Autowired
     UserDetailService userDetailService;
-
-    @RequestMapping( value = "/me", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public UserModel getCurrentUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String userName = auth.getName();
-        return userService.findByUsername(userName);
-    }
 
     @RequestMapping(value = "/403", method = RequestMethod.GET)
     public ResponseEntity accessDenied() {
@@ -61,15 +55,9 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/hello", method = RequestMethod.GET)
-    @ResponseStatus(HttpStatus.OK)
-    public Message logOut(){
-        return new Message("message", "Logout success", "info");
-    }
-
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity login(@RequestBody UserModel userModel) {
-        UserModel result = userService.findByUserNamePassword(userModel.getUsername(), userModel.getPassword());
+    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+    public ResponseEntity login(@RequestBody Credential credential) {
+        UserModel result = userService.findByUserNamePassword(credential.getUsername(), credential.getPassword());
         if (result != null) {
             UserDetails userDetails = userDetailService.loadUserByUsername(result.getUsername());
             Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
@@ -80,9 +68,9 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/authenticate", method = RequestMethod.DELETE)
     public ResponseEntity logout() {
         SecurityContextHolder.getContext().setAuthentication(null);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message("message", "Logout successfully!", "info"));
+        return ResponseEntity.status(HttpStatus.OK).body(new Message("message", "Logout successfully!", "info"));
     }
 }

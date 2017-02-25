@@ -51,10 +51,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 //                    .logoutSuccessUrl("/api/hello")
 //                    .deleteCookies("JSESSIONID")
 //                .and()
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/users").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/users/**").hasRole("ADMIN");
+                .csrf().disable();
+        //.authorizeRequests();
+        //.antMatchers(HttpMethod.POST, "/api/users").permitAll();
+        //.antMatchers(HttpMethod.GET, "/api/users/**").hasRole("ADMIN");
     }
 }
 
