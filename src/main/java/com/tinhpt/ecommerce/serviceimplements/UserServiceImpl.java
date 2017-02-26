@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserDAO userDAO;
 
-    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    //BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     private ModelMapper modelMapper = new ModelMapper();
 
@@ -52,7 +52,8 @@ public class UserServiceImpl implements UserService{
                 userModel.getAddress(),
                 userModel.getUsername()
         );
-        user.setPassword(encoder.encode(userModel.getPassword()));
+        //user.setPassword(encoder.encode(userModel.getPassword()));
+        user.setPassword(userModel.getPassword());
         userDAO.persist(user);
     }
 
