@@ -1,13 +1,11 @@
 package com.tinhpt.ecommerce.controllers;
 
 import com.tinhpt.ecommerce.configs.UserDetailService;
-import com.tinhpt.ecommerce.models.Credential;
 import com.tinhpt.ecommerce.models.Message;
 import com.tinhpt.ecommerce.models.UserModel;
 import com.tinhpt.ecommerce.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 
 /**
@@ -56,8 +53,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity login(@RequestBody Credential credential) {
-        UserModel result = userService.findByUserNamePassword(credential.getUsername(), credential.getPassword());
+    public ResponseEntity login(@RequestBody UserModel userModel) {
+        UserModel result = userService.findByUserNamePassword(userModel.getUsername(), userModel.getPassword());
         if (result != null) {
             UserDetails userDetails = userDetailService.loadUserByUsername(result.getUsername());
             Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());

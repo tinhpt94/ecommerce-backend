@@ -2,6 +2,7 @@ package com.tinhpt.ecommerce.serviceimplements;
 
 import com.tinhpt.ecommerce.daos.ProductDAO;
 import com.tinhpt.ecommerce.entities.Product;
+import com.tinhpt.ecommerce.models.ProductDetail;
 import com.tinhpt.ecommerce.models.ProductModal;
 import com.tinhpt.ecommerce.services.ProductService;
 import org.modelmapper.ModelMapper;
@@ -34,5 +35,12 @@ public class ProductServiceImpl implements ProductService {
             }
             return result;
         }
+    }
+
+    @Override
+    public ProductDetail findById(Integer id) {
+        Product product = productDAO.findById(id);
+        if (product == null) return null;
+        else return modelMapper.map(product, ProductDetail.class);
     }
 }
