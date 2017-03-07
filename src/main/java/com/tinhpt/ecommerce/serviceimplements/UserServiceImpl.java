@@ -2,14 +2,15 @@ package com.tinhpt.ecommerce.serviceimplements;
 
 import com.tinhpt.ecommerce.daos.UserDAO;
 import com.tinhpt.ecommerce.entities.User;
+import com.tinhpt.ecommerce.models.SignUpModel;
 import com.tinhpt.ecommerce.models.UserModel;
 import com.tinhpt.ecommerce.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,8 +21,6 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserDAO userDAO;
-
-    //BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     private ModelMapper modelMapper = new ModelMapper();
 
@@ -44,16 +43,19 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void persist(UserModel userModel) {
+    public void persist(SignUpModel signUpModel) {
         User user = new User(
-                userModel.getEmail(),
-                userModel.getName(),
-                userModel.getPhone(),
-                userModel.getAddress(),
-                userModel.getUsername()
+                signUpModel.getUsername(),
+                signUpModel.getPassword(),
+                signUpModel.getEmail(),
+                signUpModel.getName(),
+                signUpModel.getAddress(),
+                signUpModel.getPhone(),
+                new Date(),
+                signUpModel.getUsername(),
+                null,
+                ""
         );
-        //user.setPassword(encoder.encode(userModel.getPassword()));
-        user.setPassword(userModel.getPassword());
         userDAO.persist(user);
     }
 

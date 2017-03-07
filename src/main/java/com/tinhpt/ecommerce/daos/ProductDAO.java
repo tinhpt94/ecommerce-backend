@@ -10,5 +10,11 @@ import java.util.List;
 public interface ProductDAO {
     List<Product> findAll();
 
-    Product findById(Integer id);
+    Product findByCode(String code);
+
+    List<Product> findByBrandCode(String code);
+
+    List<Product> findByProductTypeCode(String code);
+
+    List<Product> findByMadeInCode(String code);
 }

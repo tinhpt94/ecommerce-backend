@@ -1,7 +1,6 @@
 package com.tinhpt.ecommerce.services;
 
-import com.tinhpt.ecommerce.models.ProductDetail;
-import com.tinhpt.ecommerce.models.ProductModal;
+import com.tinhpt.ecommerce.models.ProductDetailInfo;
 
 import java.util.List;
 
@@ -9,8 +8,13 @@ import java.util.List;
  * Created by tinhpt on 2/24/17.
  */
 public interface ProductService {
-    List<ProductModal> findAll();
+    List<ProductDetailInfo> findAll();
 
-    ProductDetail findById(Integer id);
+    ProductDetailInfo findByProductCode(String code);
 
+    List<ProductDetailInfo> findByBrandCode(String code);
+
+    List<ProductDetailInfo> findByMadeInCode(String code);
+
+    List<ProductDetailInfo> findByProductTypeCode(String code);
 }

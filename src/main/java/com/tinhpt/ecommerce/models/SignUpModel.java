@@ -1,12 +1,12 @@
 package com.tinhpt.ecommerce.models;
 
-public class UserModel {
+public class SignUpModel {
     private String email;
     private String name;
     private String phone;
     private String address;
-    private String role;
     private String username;
+    private String password;
 
     public String getEmail() {
         return email;
@@ -40,14 +40,6 @@ public class UserModel {
         this.address = address;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     public String getUsername() {
         return username;
     }
@@ -56,4 +48,11 @@ public class UserModel {
         this.username = username;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

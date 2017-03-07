@@ -1,7 +1,6 @@
 package com.tinhpt.ecommerce.controllers;
 
-import com.tinhpt.ecommerce.models.ProductDetail;
-import com.tinhpt.ecommerce.models.ProductModal;
+import com.tinhpt.ecommerce.models.ProductDetailInfo;
 import com.tinhpt.ecommerce.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,21 +18,21 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    ProductService productService;
+    private ProductService productService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<ProductModal> findAll() {
+    public List<ProductDetailInfo> findAll() {
         return productService.findAll();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity findById(@PathVariable(value = "id") int id) {
-        ProductDetail productDetail = productService.findById(id);
-        if (productDetail == null) {
+    @RequestMapping(value = "/{code}", method = RequestMethod.GET)
+    public ResponseEntity findById(@PathVariable(value = "code") String code) {
+        ProductDetailInfo productDetailInfo = productService.findByProductCode(code);
+        if (productDetailInfo == null) {
             return ResponseEntity.badRequest().body(null);
         } else {
-            return ResponseEntity.ok(productDetail);
+            return ResponseEntity.ok(productDetailInfo);
         }
     }
 }
