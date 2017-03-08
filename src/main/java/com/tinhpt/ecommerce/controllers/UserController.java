@@ -1,7 +1,9 @@
 package com.tinhpt.ecommerce.controllers;
 
 import com.tinhpt.ecommerce.configs.UserDetailService;
+import com.tinhpt.ecommerce.models.Credential;
 import com.tinhpt.ecommerce.models.Message;
+import com.tinhpt.ecommerce.models.SignUpModel;
 import com.tinhpt.ecommerce.models.UserModel;
 import com.tinhpt.ecommerce.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,21 +42,21 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
-    public ResponseEntity createUser(@RequestBody UserModel userModel) {
-        UserModel existedUser = userService.findByUsername(userModel.getUsername());
+    public ResponseEntity createUser(@RequestBody SignUpModel signUpModel) {
+        UserModel existedUser = userService.findByUsername(signUpModel.getUsername());
         if (existedUser != null) {
             Message message =  new Message("existedUser", "User has existed", "error");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
         } else {
-            userService.persist(userModel);
+            userService.persist(signUpModel);
             Message message =  new Message("createUser", "User has been created", "info");
             return ResponseEntity.status(HttpStatus.CREATED).body(null);
         }
     }
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity login(@RequestBody UserModel userModel) {
-        UserModel result = userService.findByUserNamePassword(userModel.getUsername(), userModel.getPassword());
+    public ResponseEntity login(@RequestBody Credential credential) {
+        UserModel result = userService.findByUserNamePassword(credential.getUsername(), credential.getPassword());
         if (result != null) {
             UserDetails userDetails = userDetailService.loadUserByUsername(result.getUsername());
             Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());

@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Created by tinhpt on 2/24/17.
- */
 @CrossOrigin
 @RestController
 @RequestMapping("api/products")
@@ -34,5 +31,23 @@ public class ProductController {
         } else {
             return ResponseEntity.ok(productDetailInfo);
         }
+    }
+
+    @RequestMapping(value = "/brand/{code}", method = RequestMethod.GET)
+    public ResponseEntity findByBrandCode(@PathVariable(value = "code") String code) {
+        List<ProductDetailInfo> productDetailInfos = productService.findByBrandCode(code);
+        return ResponseEntity.ok(productDetailInfos);
+    }
+
+    @RequestMapping(value = "/made-in/{code}", method = RequestMethod.GET)
+    public ResponseEntity findByMadeInCode(@PathVariable(value = "code") String code) {
+        List<ProductDetailInfo> productDetailInfos = productService.findByMadeInCode(code);
+        return ResponseEntity.ok(productDetailInfos);
+    }
+
+    @RequestMapping(value = "/product-type/{code}", method = RequestMethod.GET)
+    public ResponseEntity findByProductTypeCode(@PathVariable(value = "code") String code) {
+        List<ProductDetailInfo> productDetailInfos = productService.findByProductTypeCode(code);
+        return ResponseEntity.ok(productDetailInfos);
     }
 }

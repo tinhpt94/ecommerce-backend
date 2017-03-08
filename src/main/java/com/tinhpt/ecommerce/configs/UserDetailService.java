@@ -1,7 +1,7 @@
 package com.tinhpt.ecommerce.configs;
 
-import com.tinhpt.ecommerce.models.UserModel;
-import com.tinhpt.ecommerce.services.UserService;
+import com.tinhpt.ecommerce.daos.UserDAO;
+import com.tinhpt.ecommerce.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,32 +13,27 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by PhamTinh on 2/17/2017.
- */
 @Service("userDetailService")
 public class UserDetailService implements UserDetailsService {
 
     @Autowired
-    UserService userService;
+    private UserDAO userDAO;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            UserModel userModel = userService.findByUsername(username);
-            if (userModel == null) {
+            User user = userDAO.findByUsername(username);
+            if (user == null) {
                 throw new UsernameNotFoundException("UserModel " + username + " not found");
             }
             List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_" + userModel.getRole());
+            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_" + user.getRole());
             grantedAuthorities.add(grantedAuthority);
 
-            UserDetails userDetails = new org.springframework.security.core.userdetails.User(
-                    userModel.getUsername(), userModel.getPassword(), true, true, true, true,
+            return new org.springframework.security.core.userdetails.User(
+                    user.getUsername(), user.getPassword(), true, true, true, true,
                     grantedAuthorities
             );
-
-            return userDetails;
         } catch (Exception e) {
             throw new UsernameNotFoundException("UserModel " + username + " not found");
         }

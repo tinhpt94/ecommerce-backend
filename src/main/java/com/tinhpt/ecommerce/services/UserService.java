@@ -11,7 +11,6 @@ import java.util.List;
 public interface UserService {
     UserModel findByUsername(String username);
     List<UserModel> findAll();
-
     void persist(SignUpModel signUpModel);
     UserModel findByUserNamePassword(String username, String password);
 }
