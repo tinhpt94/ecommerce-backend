@@ -10,21 +10,17 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
-/**
- * Created by PhamTinh on 2/17/2017.
- */
 @Transactional
 public class AbstractDAO<T, PK extends Serializable> {
 
     private final Class<T> persistentClass;
+    @Autowired
+    private SessionFactory sessionFactory;
 
     public AbstractDAO() {
         this.persistentClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass())
                 .getActualTypeArguments()[0];
     }
-
-    @Autowired
-    private SessionFactory sessionFactory;
 
     protected Session getSession() {
         return sessionFactory.getCurrentSession();

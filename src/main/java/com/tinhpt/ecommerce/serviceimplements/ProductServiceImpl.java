@@ -4,11 +4,11 @@ import com.tinhpt.ecommerce.daos.BrandDAO;
 import com.tinhpt.ecommerce.daos.MadeInDAO;
 import com.tinhpt.ecommerce.daos.ProductDAO;
 import com.tinhpt.ecommerce.daos.ProductTypeDAO;
+import com.tinhpt.ecommerce.entities.Brand;
+import com.tinhpt.ecommerce.entities.MadeIn;
 import com.tinhpt.ecommerce.entities.Product;
-import com.tinhpt.ecommerce.models.BrandModel;
-import com.tinhpt.ecommerce.models.MadeInModel;
-import com.tinhpt.ecommerce.models.ProductDetailInfo;
-import com.tinhpt.ecommerce.models.ProductTypeModel;
+import com.tinhpt.ecommerce.entities.ProductType;
+import com.tinhpt.ecommerce.models.*;
 import com.tinhpt.ecommerce.services.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +41,7 @@ public class ProductServiceImpl implements ProductService {
         if (products.size() == 0) return null;
         else {
             for (Product product : products) {
-                ProductDetailInfo productDetailInfo = modelMapper.map(product, ProductDetailInfo.class);
-                result.add(productDetailInfo);
+                result.add(mapEntityToModel(product));
             }
             return result;
         }
@@ -65,8 +64,7 @@ public class ProductServiceImpl implements ProductService {
         if (products.size() == 0) return null;
         else {
             for (Product product : products) {
-                ProductDetailInfo productDetailInfo = mapEntityToModel(product);
-                result.add(productDetailInfo);
+                result.add(mapEntityToModel(product));
             }
             return result;
         }
@@ -79,8 +77,7 @@ public class ProductServiceImpl implements ProductService {
         if (products.size() == 0) return null;
         else {
             for (Product product : products) {
-                ProductDetailInfo productDetailInfo = mapEntityToModel(product);
-                result.add(productDetailInfo);
+                result.add(mapEntityToModel(product));
             }
             return result;
         }
@@ -93,8 +90,7 @@ public class ProductServiceImpl implements ProductService {
         if (products.size() == 0) return null;
         else {
             for (Product product : products) {
-                ProductDetailInfo productDetailInfo = mapEntityToModel(product);
-                result.add(productDetailInfo);
+                result.add(mapEntityToModel(product));
             }
             return result;
         }
@@ -109,5 +105,28 @@ public class ProductServiceImpl implements ProductService {
         productDetailInfo.setMadeIn(madeIn);
         productDetailInfo.setProductType(productType);
         return productDetailInfo;
+    }
+
+    @Override
+    public Menu fetchMenuItem() {
+        List<BrandModel> resultBrands = new ArrayList<>();
+        List<Brand> brands = brandDAO.findAll();
+        for (Brand brand : brands) {
+            resultBrands.add(modelMapper.map(brand, BrandModel.class));
+        }
+
+        List<ProductTypeModel> resultProductTypes = new ArrayList<>();
+        List<ProductType> productTypes = productTypeDAO.findAll();
+        for (ProductType productType : productTypes) {
+            resultProductTypes.add(modelMapper.map(productType, ProductTypeModel.class));
+        }
+
+        List<MadeInModel> resultMadeIns = new ArrayList<>();
+        List<MadeIn> madeIns = madeInDAO.findAll();
+        for (MadeIn madeIn : madeIns) {
+            resultMadeIns.add(modelMapper.map(madeIn, MadeInModel.class));
+        }
+
+        return new Menu(resultBrands, resultMadeIns, resultProductTypes);
     }
 }

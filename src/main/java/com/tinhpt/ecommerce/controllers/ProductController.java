@@ -50,4 +50,9 @@ public class ProductController {
         List<ProductDetailInfo> productDetailInfos = productService.findByProductTypeCode(code);
         return ResponseEntity.ok(productDetailInfos);
     }
+
+    @RequestMapping(value = "/menu", method = RequestMethod.GET)
+    public ResponseEntity fetchBrands() {
+        return ResponseEntity.ok(productService.fetchMenuItem());
+    }
 }
