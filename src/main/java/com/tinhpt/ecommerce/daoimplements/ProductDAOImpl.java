@@ -39,7 +39,7 @@ public class ProductDAOImpl extends AbstractDAO<Product, Integer> implements Pro
 
     @Override
     public List<Product> findByMadeInCode(String code) {
-        String strSQL = "SELECT * from products, made_ins WHERE product.made_in = made_ins.id AND made_ins.code = :code";
+        String strSQL = "SELECT * from products, made_ins WHERE products.made_in = made_ins.id AND made_ins.code = :code";
         SQLQuery query = getSession().createSQLQuery(strSQL);
         query.addEntity(Product.class);
         query.setParameter("code", code);

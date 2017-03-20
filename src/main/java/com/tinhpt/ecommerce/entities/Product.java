@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
-@Table(name = "products", schema = "ecommerce")
+@Table(name = "products", schema = "ecommerce", catalog = "")
 public class Product {
     private int id;
     private String name;
@@ -18,9 +18,12 @@ public class Product {
     private int productType;
     private int brand;
     private int madeIn;
+    private int discount;
+    private double rating;
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     public int getId() {
         return id;
     }
@@ -30,7 +33,7 @@ public class Product {
     }
 
     @Basic
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length = 100)
     public String getName() {
         return name;
     }
@@ -40,7 +43,7 @@ public class Product {
     }
 
     @Basic
-    @Column(name = "code")
+    @Column(name = "code", nullable = false, length = 100)
     public String getCode() {
         return code;
     }
@@ -50,7 +53,7 @@ public class Product {
     }
 
     @Basic
-    @Column(name = "price")
+    @Column(name = "price", nullable = false, precision = 0)
     public double getPrice() {
         return price;
     }
@@ -60,7 +63,7 @@ public class Product {
     }
 
     @Basic
-    @Column(name = "description")
+    @Column(name = "description", nullable = true, length = 4000)
     public String getDescription() {
         return description;
     }
@@ -70,7 +73,7 @@ public class Product {
     }
 
     @Basic
-    @Column(name = "image_url")
+    @Column(name = "image_url", nullable = false, length = 200)
     public String getImageUrl() {
         return imageUrl;
     }
@@ -80,7 +83,7 @@ public class Product {
     }
 
     @Basic
-    @Column(name = "quantity")
+    @Column(name = "quantity", nullable = false)
     public int getQuantity() {
         return quantity;
     }
@@ -90,7 +93,7 @@ public class Product {
     }
 
     @Basic
-    @Column(name = "created_date")
+    @Column(name = "created_date", nullable = false)
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -100,7 +103,7 @@ public class Product {
     }
 
     @Basic
-    @Column(name = "updated_date")
+    @Column(name = "updated_date", nullable = true)
     public Date getUpdatedDate() {
         return updatedDate;
     }
@@ -110,7 +113,7 @@ public class Product {
     }
 
     @Basic
-    @Column(name = "product_type")
+    @Column(name = "product_type", nullable = false)
     public int getProductType() {
         return productType;
     }
@@ -120,7 +123,7 @@ public class Product {
     }
 
     @Basic
-    @Column(name = "brand")
+    @Column(name = "brand", nullable = false)
     public int getBrand() {
         return brand;
     }
@@ -130,13 +133,33 @@ public class Product {
     }
 
     @Basic
-    @Column(name = "made_in")
+    @Column(name = "made_in", nullable = false)
     public int getMadeIn() {
         return madeIn;
     }
 
     public void setMadeIn(int madeIn) {
         this.madeIn = madeIn;
+    }
+
+    @Basic
+    @Column(name = "discount", nullable = true)
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
+    @Basic
+    @Column(name = "rating", nullable = true, precision = 0)
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
     @Override
@@ -152,6 +175,8 @@ public class Product {
         if (productType != product.productType) return false;
         if (brand != product.brand) return false;
         if (madeIn != product.madeIn) return false;
+        if (discount != product.discount) return false;
+        if (Double.compare(product.rating, rating) != 0) return false;
         if (name != null ? !name.equals(product.name) : product.name != null) return false;
         if (code != null ? !code.equals(product.code) : product.code != null) return false;
         if (description != null ? !description.equals(product.description) : product.description != null) return false;
@@ -179,6 +204,9 @@ public class Product {
         result = 31 * result + productType;
         result = 31 * result + brand;
         result = 31 * result + madeIn;
+        result = 31 * result + discount;
+        temp = Double.doubleToLongBits(rating);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 }

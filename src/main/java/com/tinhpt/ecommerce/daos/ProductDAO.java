@@ -10,4 +10,6 @@ public interface ProductDAO {
     List<Product> findByBrandCode(String code);
     List<Product> findByProductTypeCode(String code);
     List<Product> findByMadeInCode(String code);
+
+    void update(Product product);
 }

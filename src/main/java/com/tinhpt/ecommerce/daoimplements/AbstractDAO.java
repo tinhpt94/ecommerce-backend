@@ -35,8 +35,14 @@ public class AbstractDAO<T, PK extends Serializable> {
         return (T) getSession().get(persistentClass, pk);
     }
 
-    public void persist(T entity) {
+    public T persist(T entity) {
         getSession().persist(entity);
+        getSession().flush();
+        return entity;
+    }
+
+    public PK save(T entity) {
+        return (PK) getSession().save(entity);
     }
 
     public void update(T entity) {

@@ -48,9 +48,9 @@ public class UserController {
             Message message =  new Message("existedUser", "User has existed", "error");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
         } else {
-            userService.persist(signUpModel);
+            UserModel createdUser = userService.persist(signUpModel);
             Message message =  new Message("createUser", "User has been created", "info");
-            return ResponseEntity.status(HttpStatus.CREATED).body(null);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
         }
     }
 

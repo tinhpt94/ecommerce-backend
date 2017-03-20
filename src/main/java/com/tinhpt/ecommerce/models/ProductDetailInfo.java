@@ -1,14 +1,35 @@
 package com.tinhpt.ecommerce.models;
 
+import java.sql.Date;
+
 public class ProductDetailInfo {
     private String name;
     private String code;
     private double price;
     private String imageUrl;
     private String description;
+    private Date createdDate;
     private BrandModel brand;
     private ProductTypeModel productType;
     private MadeInModel madeIn;
+    private int discount;
+    private double rating;
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
 
     public String getName() {
         return name;
@@ -72,5 +93,13 @@ public class ProductDetailInfo {
 
     public void setMadeIn(MadeInModel madeIn) {
         this.madeIn = madeIn;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 }

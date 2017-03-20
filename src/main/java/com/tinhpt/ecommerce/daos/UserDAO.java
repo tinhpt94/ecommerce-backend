@@ -7,6 +7,7 @@ import java.util.List;
 public interface UserDAO {
     List<User> findAll();
     User findByUsername(String username);
-    void persist(User user);
+
+    User persist(User user);
     User findByUserNamePassword(String userName, String password);
 }

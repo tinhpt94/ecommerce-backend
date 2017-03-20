@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void persist(SignUpModel signUpModel) {
+    public UserModel persist(SignUpModel signUpModel) {
         User user = new User(
                 signUpModel.getUsername(),
                 signUpModel.getPassword(),
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService{
                 null,
                 ""
         );
-        userDAO.persist(user);
+        return modelMapper.map(userDAO.persist(user), UserModel.class);
     }
 
     @Override

@@ -27,7 +27,7 @@ public class ProductController {
     public ResponseEntity findById(@PathVariable(value = "code") String code) {
         ProductDetailInfo productDetailInfo = productService.findByProductCode(code);
         if (productDetailInfo == null) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.notFound().build();
         } else {
             return ResponseEntity.ok(productDetailInfo);
         }

@@ -61,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDetailInfo> findByBrandCode(String code) {
         List<ProductDetailInfo> result = new ArrayList<>();
         List<Product> products = productDAO.findByBrandCode(code);
-        if (products.size() == 0) return null;
+        if (products.size() == 0) return result;
         else {
             for (Product product : products) {
                 result.add(mapEntityToModel(product));
@@ -74,7 +74,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDetailInfo> findByMadeInCode(String code) {
         List<ProductDetailInfo> result = new ArrayList<>();
         List<Product> products = productDAO.findByMadeInCode(code);
-        if (products.size() == 0) return null;
+        if (products.size() == 0) return result;
         else {
             for (Product product : products) {
                 result.add(mapEntityToModel(product));
@@ -87,7 +87,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDetailInfo> findByProductTypeCode(String code) {
         List<ProductDetailInfo> result = new ArrayList<>();
         List<Product> products = productDAO.findByProductTypeCode(code);
-        if (products.size() == 0) return null;
+        if (products.size() == 0) return result;
         else {
             for (Product product : products) {
                 result.add(mapEntityToModel(product));
