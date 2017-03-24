@@ -1,7 +1,7 @@
 package com.tinhpt.ecommerce.entities;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
 @Table(name = "products", schema = "ecommerce", catalog = "")
@@ -20,6 +20,25 @@ public class Product {
     private int madeIn;
     private int discount;
     private double rating;
+
+    public Product() {
+
+    }
+
+    public Product(String name, String code, double price, String description, String imageUrl, int quantity, int productType, int brand, int madeIn, int discount, double rating) {
+        this.name = name;
+        this.code = code;
+        this.price = price;
+        this.description = description;
+        this.imageUrl = imageUrl;
+        this.quantity = quantity;
+        this.productType = productType;
+        this.brand = brand;
+        this.madeIn = madeIn;
+        this.discount = discount;
+        this.rating = rating;
+        this.createdDate = new Date();
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

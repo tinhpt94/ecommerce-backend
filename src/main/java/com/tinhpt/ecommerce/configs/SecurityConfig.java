@@ -2,6 +2,7 @@ package com.tinhpt.ecommerce.configs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,7 +16,7 @@ import org.springframework.security.web.access.channel.ChannelProcessingFilter;
  */
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     UserDetailService userDetailService;
@@ -23,8 +24,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder
-                .userDetailsService( userDetailService )
-                .passwordEncoder( passwordEncoder() );
+                .userDetailsService(userDetailService)
+                .passwordEncoder(passwordEncoder());
     }
 
     private PasswordEncoder passwordEncoder() {
@@ -34,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity
+                .csrf().disable()
                 .anonymous().disable()
                 .addFilterBefore(new CorsFilter(), ChannelProcessingFilter.class)
 //                .formLogin()
@@ -50,10 +52,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 //                    .logoutSuccessUrl("/api/hello")
 //                    .deleteCookies("JSESSIONID")
 //                .and()
-                .csrf().disable();
-        //.authorizeRequests();
-        //.antMatchers(HttpMethod.POST, "/api/users").permitAll();
-        //.antMatchers(HttpMethod.GET, "/api/users/**").hasRole("ADMIN");
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/api/users").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/users/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/api/products").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/api/products").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/products").hasRole("ADMIN");
     }
 }
 

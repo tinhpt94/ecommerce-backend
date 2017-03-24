@@ -11,5 +11,8 @@ public interface ProductDAO {
     List<Product> findByProductTypeCode(String code);
     List<Product> findByMadeInCode(String code);
 
+    Integer save(Product product);
     void update(Product product);
+
+    void delete(Product product);
 }

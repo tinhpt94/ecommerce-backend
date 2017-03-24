@@ -1,6 +1,7 @@
 package com.tinhpt.ecommerce.controllers;
 
 import com.tinhpt.ecommerce.models.ProductDetailInfo;
+import com.tinhpt.ecommerce.models.ProductRequest;
 import com.tinhpt.ecommerce.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,5 +55,35 @@ public class ProductController {
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
     public ResponseEntity fetchBrands() {
         return ResponseEntity.ok(productService.fetchMenuItem());
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ResponseEntity create(@RequestBody ProductRequest productRequest) {
+        try {
+            productService.create(productRequest);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    public ResponseEntity update(@RequestBody ProductRequest productRequest) {
+        try {
+            productService.update(productRequest);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.DELETE)
+    public ResponseEntity delete(@RequestBody ProductRequest productRequest) {
+        try {
+            productService.delete(productRequest);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

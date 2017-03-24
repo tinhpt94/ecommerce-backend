@@ -4,10 +4,7 @@ import com.tinhpt.ecommerce.models.OrderRequest;
 import com.tinhpt.ecommerce.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
@@ -21,7 +18,7 @@ public class OrderController {
             value = "/order",
             method = RequestMethod.POST
     )
-    public ResponseEntity create(OrderRequest order) {
+    public ResponseEntity create(@RequestBody OrderRequest order) {
         int orderID;
         try {
             orderID = orderService.create(order);

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service("productService")
@@ -128,5 +129,47 @@ public class ProductServiceImpl implements ProductService {
         }
 
         return new Menu(resultBrands, resultMadeIns, resultProductTypes);
+    }
+
+    @Override
+    public void create(ProductRequest productRequest) {
+        Product product = new Product(
+                productRequest.getName(),
+                productRequest.getCode(),
+                productRequest.getPrice(),
+                productRequest.getDescription(),
+                productRequest.getImageUrl(),
+                productRequest.getQuantity(),
+                productRequest.getProductType(),
+                productRequest.getBrand(),
+                productRequest.getMadeIn(),
+                productRequest.getDiscount(),
+                productRequest.getRating()
+        );
+        productDAO.save(product);
+    }
+
+    @Override
+    public void update(ProductRequest productRequest) {
+        Product product = productDAO.findByCode(productRequest.getCode());
+        product.setQuantity(productRequest.getQuantity());
+        product.setName(productRequest.getName());
+        product.setCode(productRequest.getCode());
+        product.setPrice(productRequest.getPrice());
+        product.setDescription(productRequest.getDescription());
+        product.setImageUrl(productRequest.getImageUrl());
+        product.setProductType(productRequest.getProductType());
+        product.setBrand(productRequest.getBrand());
+        product.setMadeIn(productRequest.getMadeIn());
+        product.setDiscount(productRequest.getDiscount());
+        product.setUpdatedDate(new Date());
+        product.setRating(productRequest.getRating());
+        productDAO.update(product);
+    }
+
+    @Override
+    public void delete(ProductRequest productRequest) {
+        Product product = productDAO.findByCode(productRequest.getCode());
+        productDAO.delete(product);
     }
 }

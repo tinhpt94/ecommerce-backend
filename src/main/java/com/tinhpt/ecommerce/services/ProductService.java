@@ -2,6 +2,7 @@ package com.tinhpt.ecommerce.services;
 
 import com.tinhpt.ecommerce.models.Menu;
 import com.tinhpt.ecommerce.models.ProductDetailInfo;
+import com.tinhpt.ecommerce.models.ProductRequest;
 
 import java.util.List;
 
@@ -12,5 +13,10 @@ public interface ProductService {
     List<ProductDetailInfo> findByMadeInCode(String code);
     List<ProductDetailInfo> findByProductTypeCode(String code);
 
+    void create(ProductRequest productRequest);
+
+    void update(ProductRequest productRequest);
+
+    void delete(ProductRequest productRequest);
     Menu fetchMenuItem();
 }
