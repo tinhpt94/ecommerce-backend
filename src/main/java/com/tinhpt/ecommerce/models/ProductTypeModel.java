@@ -1,8 +1,17 @@
 package com.tinhpt.ecommerce.models;
 
 public class ProductTypeModel {
+    private int id;
     private String code;
     private String typeName;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getCode() {
         return code;

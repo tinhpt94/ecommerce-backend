@@ -10,6 +10,7 @@ import com.tinhpt.ecommerce.entities.Product;
 import com.tinhpt.ecommerce.entities.ProductType;
 import com.tinhpt.ecommerce.models.*;
 import com.tinhpt.ecommerce.services.ProductService;
+import com.tinhpt.ecommerce.utils.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -135,7 +136,7 @@ public class ProductServiceImpl implements ProductService {
     public void create(ProductRequest productRequest) {
         Product product = new Product(
                 productRequest.getName(),
-                productRequest.getCode(),
+                StringUtils.convertToCode(productRequest.getName()),
                 productRequest.getPrice(),
                 productRequest.getDescription(),
                 productRequest.getImageUrl(),
@@ -151,10 +152,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void update(ProductRequest productRequest) {
-        Product product = productDAO.findByCode(productRequest.getCode());
+        Product product = productDAO.findById(productRequest.getId());
         product.setQuantity(productRequest.getQuantity());
         product.setName(productRequest.getName());
-        product.setCode(productRequest.getCode());
+        product.setCode(StringUtils.convertToCode(productRequest.getName()));
         product.setPrice(productRequest.getPrice());
         product.setDescription(productRequest.getDescription());
         product.setImageUrl(productRequest.getImageUrl());
@@ -169,7 +170,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void delete(ProductRequest productRequest) {
-        Product product = productDAO.findByCode(productRequest.getCode());
+        Product product = productDAO.findById(productRequest.getId());
         productDAO.delete(product);
     }
 }

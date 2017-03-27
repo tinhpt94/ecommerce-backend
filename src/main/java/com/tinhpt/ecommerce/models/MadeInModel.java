@@ -1,8 +1,17 @@
 package com.tinhpt.ecommerce.models;
 
 public class MadeInModel {
+    private int id;
     private String code;
     private String madeIn;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getCode() {
         return code;

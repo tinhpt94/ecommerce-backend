@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by PhamTinh on 2/17/2017.
  */
-@CrossOrigin
+@CrossOrigin(value = "*", maxAge = 3600, allowCredentials = "true")
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -64,6 +64,18 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.OK).body(result);
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Message("message", "Invalid username or password", "error"));
+        }
+    }
+
+    @RequestMapping(value = "/authenticate", method = RequestMethod.GET)
+    public ResponseEntity getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        UserModel currentUser = userService.findByUsername(auth.getName());
+        if (currentUser != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(currentUser);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 

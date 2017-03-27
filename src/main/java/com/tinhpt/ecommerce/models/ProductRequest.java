@@ -1,8 +1,9 @@
 package com.tinhpt.ecommerce.models;
 
 public class ProductRequest {
+    private int id;
     private String name;
-    private String code;
+    //private String code;
     private double price;
     private String imageUrl;
     private String description;
@@ -12,6 +13,14 @@ public class ProductRequest {
     private int discount;
     private double rating;
     private int quantity;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getQuantity() {
         return quantity;
@@ -29,13 +38,13 @@ public class ProductRequest {
         this.name = name;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
+//    public String getCode() {
+//        return code;
+//    }
+//
+//    public void setCode(String code) {
+//        this.code = code;
+//    }
 
     public double getPrice() {
         return price;
