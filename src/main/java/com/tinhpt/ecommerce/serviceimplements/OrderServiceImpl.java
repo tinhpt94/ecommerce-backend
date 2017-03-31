@@ -6,16 +6,15 @@ import com.tinhpt.ecommerce.daos.ProductDAO;
 import com.tinhpt.ecommerce.entities.Order;
 import com.tinhpt.ecommerce.entities.OrderDetail;
 import com.tinhpt.ecommerce.entities.Product;
-import com.tinhpt.ecommerce.models.Customer;
-import com.tinhpt.ecommerce.models.LineItem;
-import com.tinhpt.ecommerce.models.OrderRequest;
-import com.tinhpt.ecommerce.models.OrderResponse;
+import com.tinhpt.ecommerce.models.*;
 import com.tinhpt.ecommerce.services.OrderService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service("orderService")
@@ -52,14 +51,7 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orders = orderDAO.findAll();
         List<OrderResponse> orderResponses = new ArrayList<>();
         for (Order order : orders) {
-            OrderResponse orderResponse = modelMapper.map(order, OrderResponse.class);
-            List<OrderDetail> orderDetails = orderDetailDAO.findByOrderId(orderResponse.getId());
-            List<LineItem> lineItems = new ArrayList<>();
-            for (OrderDetail orderDetail : orderDetails) {
-                lineItems.add(modelMapper.map(orderDetail, LineItem.class));
-            }
-            orderResponse.setLineItems(lineItems);
-            orderResponses.add(orderResponse);
+            orderResponses.add(mapEntity2Modal(order));
         }
         return orderResponses;
     }
@@ -68,17 +60,30 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponse fetchById(int id) {
         Order order = orderDAO.findById(id);
         if (order != null) {
-            OrderResponse orderResponse = modelMapper.map(order, OrderResponse.class);
-            List<OrderDetail> orderDetails = orderDetailDAO.findByOrderId(orderResponse.getId());
-            List<LineItem> lineItems = new ArrayList<>();
-            for (OrderDetail orderDetail : orderDetails) {
-                lineItems.add(modelMapper.map(orderDetail, LineItem.class));
-            }
-            orderResponse.setLineItems(lineItems);
-            return orderResponse;
+            return mapEntity2Modal(order);
         }
         {
             return null;
         }
+    }
+
+    @Override
+    public OrderResponse updateOrder(OrderUpdate orderUpdate) {
+        Order order = orderDAO.findById(orderUpdate.getId());
+        order.setStatus(orderUpdate.getStatus());
+        order.setUpdatedDate(new Date());
+        order.setUpdatedByUser(SecurityContextHolder.getContext().getAuthentication().getName());
+        return mapEntity2Modal(orderDAO.merge(order));
+    }
+
+    private OrderResponse mapEntity2Modal(Order order) {
+        OrderResponse orderResponse = modelMapper.map(order, OrderResponse.class);
+        List<OrderDetail> orderDetails = orderDetailDAO.findByOrderId(orderResponse.getId());
+        List<LineItem> lineItems = new ArrayList<>();
+        for (OrderDetail orderDetail : orderDetails) {
+            lineItems.add(modelMapper.map(orderDetail, LineItem.class));
+        }
+        orderResponse.setLineItems(lineItems);
+        return orderResponse;
     }
 }

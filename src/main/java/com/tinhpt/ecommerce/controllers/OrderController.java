@@ -1,12 +1,13 @@
 package com.tinhpt.ecommerce.controllers;
 
 import com.tinhpt.ecommerce.models.OrderRequest;
+import com.tinhpt.ecommerce.models.OrderUpdate;
 import com.tinhpt.ecommerce.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
+@CrossOrigin(value = "*", maxAge = 3600, allowCredentials = "true")
 @RestController
 @RequestMapping("/api")
 public class OrderController {
@@ -48,6 +49,17 @@ public class OrderController {
             return ResponseEntity.ok(orderService.fetchById(id));
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @RequestMapping(value = "/orders",
+            method = RequestMethod.PUT)
+    public ResponseEntity updateOrder(@RequestBody OrderUpdate orderUpdate) {
+        try {
+
+            return ResponseEntity.ok(orderService.updateOrder(orderUpdate));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 }

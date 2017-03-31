@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin
+@CrossOrigin(value = "*", maxAge = 3600, allowCredentials = "true")
 @RestController
 @RequestMapping("api/products")
 public class ProductController {

@@ -53,6 +53,10 @@ public class AbstractDAO<T, PK extends Serializable> {
         getSession().delete(entity);
     }
 
+    public T merge(T entity) {
+        return (T) getSession().merge(entity);
+    }
+
     protected Criteria createEntityCriteria(){
         return getSession().createCriteria(persistentClass);
     }
