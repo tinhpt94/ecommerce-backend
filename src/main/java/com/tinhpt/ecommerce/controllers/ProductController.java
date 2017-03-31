@@ -25,8 +25,18 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/{code}", method = RequestMethod.GET)
-    public ResponseEntity findById(@PathVariable(value = "code") String code) {
+    public ResponseEntity findByCode(@PathVariable(value = "code") String code) {
         ProductDetailInfo productDetailInfo = productService.findByProductCode(code);
+        if (productDetailInfo == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(productDetailInfo);
+        }
+    }
+
+    @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
+    public ResponseEntity findById(@PathVariable(value = "id") int id) {
+        ProductDetailInfo productDetailInfo = productService.findById(id);
         if (productDetailInfo == null) {
             return ResponseEntity.notFound().build();
         } else {

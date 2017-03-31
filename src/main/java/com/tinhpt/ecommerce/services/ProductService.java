@@ -13,6 +13,7 @@ public interface ProductService {
     List<ProductDetailInfo> findByMadeInCode(String code);
     List<ProductDetailInfo> findByProductTypeCode(String code);
 
+    ProductDetailInfo findById(int id);
     void create(ProductRequest productRequest);
 
     void update(ProductRequest productRequest);

@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface OrderDetailDAO {
     List<OrderDetail> findAll();
-
     OrderDetail findById(Integer id);
-
     Integer save(OrderDetail orderDetail);
+
+    List<OrderDetail> findByOrderId(Integer id);
 }

@@ -60,6 +60,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductDetailInfo findById(int id) {
+        Product product = productDAO.findById(id);
+        if (product == null) {
+            return null;
+        } else {
+            return mapEntityToModel(product);
+        }
+    }
+
+    @Override
     public List<ProductDetailInfo> findByBrandCode(String code) {
         List<ProductDetailInfo> result = new ArrayList<>();
         List<Product> products = productDAO.findByBrandCode(code);
