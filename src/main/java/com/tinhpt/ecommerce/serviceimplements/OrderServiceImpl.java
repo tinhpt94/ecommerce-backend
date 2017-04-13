@@ -49,26 +49,25 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderResponse> fetchAll() {
         List<Order> orders = orderDAO.findAll();
-        List<OrderResponse> orderResponses = new ArrayList<>();
+        List<OrderResponse> orderDetailResponses = new ArrayList<>();
         for (Order order : orders) {
-            orderResponses.add(mapEntity2Modal(order));
+            orderDetailResponses.add(modelMapper.map(order, OrderResponse.class));
         }
-        return orderResponses;
+        return orderDetailResponses;
     }
 
     @Override
-    public OrderResponse fetchById(int id) {
+    public OrderDetailResponse fetchById(int id) {
         Order order = orderDAO.findById(id);
         if (order != null) {
             return mapEntity2Modal(order);
-        }
-        {
+        } else {
             return null;
         }
     }
 
     @Override
-    public OrderResponse updateOrder(OrderUpdate orderUpdate) {
+    public OrderDetailResponse updateOrder(OrderUpdate orderUpdate) {
         Order order = orderDAO.findById(orderUpdate.getId());
         order.setStatus(orderUpdate.getStatus());
         order.setUpdatedDate(new Date());
@@ -76,14 +75,14 @@ public class OrderServiceImpl implements OrderService {
         return mapEntity2Modal(orderDAO.merge(order));
     }
 
-    private OrderResponse mapEntity2Modal(Order order) {
-        OrderResponse orderResponse = modelMapper.map(order, OrderResponse.class);
-        List<OrderDetail> orderDetails = orderDetailDAO.findByOrderId(orderResponse.getId());
+    private OrderDetailResponse mapEntity2Modal(Order order) {
+        OrderDetailResponse orderDetailResponse = modelMapper.map(order, OrderDetailResponse.class);
+        List<OrderDetail> orderDetails = orderDetailDAO.findByOrderId(orderDetailResponse.getId());
         List<LineItem> lineItems = new ArrayList<>();
         for (OrderDetail orderDetail : orderDetails) {
             lineItems.add(modelMapper.map(orderDetail, LineItem.class));
         }
-        orderResponse.setLineItems(lineItems);
-        return orderResponse;
+        orderDetailResponse.setLineItems(lineItems);
+        return orderDetailResponse;
     }
 }

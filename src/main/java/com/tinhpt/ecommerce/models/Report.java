@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
+import java.util.Date;
+
 @Getter
+@Setter
 @AllArgsConstructor
-public class Message {
-    private String key;
-    private String value;
-    private String type;
+public class Report {
+    private Date reportDate;
+    private int orderAmount;
+    private double totalCost;
 }

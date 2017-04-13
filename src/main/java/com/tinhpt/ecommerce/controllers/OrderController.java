@@ -44,7 +44,7 @@ public class OrderController {
     @RequestMapping(value = "/orders/{id}",
             method = RequestMethod.GET
     )
-    public ResponseEntity fetchAll(@PathVariable(value = "id") int id) {
+    public ResponseEntity fetchById(@PathVariable(value = "id") int id) {
         try {
             return ResponseEntity.ok(orderService.fetchById(id));
         } catch (Exception e) {
@@ -56,7 +56,6 @@ public class OrderController {
             method = RequestMethod.PUT)
     public ResponseEntity updateOrder(@RequestBody OrderUpdate orderUpdate) {
         try {
-
             return ResponseEntity.ok(orderService.updateOrder(orderUpdate));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
