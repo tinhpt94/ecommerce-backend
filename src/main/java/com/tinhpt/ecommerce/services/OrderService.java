@@ -13,5 +13,6 @@ public interface OrderService {
     OrderDetailResponse updateOrder(OrderUpdate orderUpdate);
     List<OrderResponse> fetchAll();
 
+    List<OrderResponse> fetchByUserId(int userId);
     OrderDetailResponse fetchById(int id);
 }

@@ -1,13 +1,7 @@
 package com.tinhpt.ecommerce.serviceimplements;
 
-import com.tinhpt.ecommerce.daos.BrandDAO;
-import com.tinhpt.ecommerce.daos.MadeInDAO;
-import com.tinhpt.ecommerce.daos.ProductDAO;
-import com.tinhpt.ecommerce.daos.ProductTypeDAO;
-import com.tinhpt.ecommerce.entities.Brand;
-import com.tinhpt.ecommerce.entities.MadeIn;
-import com.tinhpt.ecommerce.entities.Product;
-import com.tinhpt.ecommerce.entities.ProductType;
+import com.tinhpt.ecommerce.daos.*;
+import com.tinhpt.ecommerce.entities.*;
 import com.tinhpt.ecommerce.models.*;
 import com.tinhpt.ecommerce.services.ProductService;
 import com.tinhpt.ecommerce.utils.StringUtils;
@@ -24,15 +18,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductDAO productDAO;
-
     @Autowired
     private BrandDAO brandDAO;
-
     @Autowired
     private ProductTypeDAO productTypeDAO;
-
     @Autowired
     private MadeInDAO madeInDAO;
+    @Autowired
+    private CommentDAO commentDAO;
+    @Autowired
+    private UserDAO userDAO;
 
     private ModelMapper modelMapper = new ModelMapper();
 
@@ -116,6 +111,7 @@ public class ProductServiceImpl implements ProductService {
         productDetailInfo.setBrand(brand);
         productDetailInfo.setMadeIn(madeIn);
         productDetailInfo.setProductType(productType);
+        productDetailInfo.setComments(fetchCommentsByProductId(product.getId()));
         return productDetailInfo;
     }
 
@@ -182,5 +178,32 @@ public class ProductServiceImpl implements ProductService {
     public void delete(ProductRequest productRequest) {
         Product product = productDAO.findById(productRequest.getId());
         productDAO.delete(product);
+    }
+
+    @Override
+    public CommentResponse create(CommentRequest commentRequest) {
+        Comment comment = new Comment(
+                commentRequest.getTitle(),
+                commentRequest.getContent(),
+                commentRequest.getRating(),
+                commentRequest.getUserId(),
+                commentRequest.getProductId()
+        );
+        commentDAO.persist(comment);
+        return modelMapper.map(comment, CommentResponse.class);
+    }
+
+    @Override
+    public List<CommentResponse> fetchCommentsByProductId(int productId) {
+        List<Comment> comments = commentDAO.findByProductId(productId);
+        List<CommentResponse> commentResponses = new ArrayList<>();
+        for (Comment comment : comments) {
+            User user = userDAO.findById(comment.getUserId());
+            CommentResponse commentResponse = modelMapper.map(comment, CommentResponse.class);
+            commentResponse.setRatedByUser(user.getName());
+            commentResponses.add(commentResponse);
+
+        }
+        return commentResponses;
     }
 }

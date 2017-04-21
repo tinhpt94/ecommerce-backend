@@ -41,6 +41,17 @@ public class OrderController {
         }
     }
 
+    @RequestMapping(value = "orders-user",
+            method = RequestMethod.GET
+    )
+    public ResponseEntity fetchByUserId(@RequestParam(value = "userId") int userId) {
+        try {
+            return ResponseEntity.ok(orderService.fetchByUserId(userId));
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @RequestMapping(value = "/orders/{id}",
             method = RequestMethod.GET
     )

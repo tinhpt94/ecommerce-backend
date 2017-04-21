@@ -33,7 +33,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public int create(OrderRequest orderRequest) {
         Customer customer = orderRequest.getCustomer();
-        Order order = new Order(customer.getEmail(), customer.getName(), customer.getAddress(), customer.getPhone(), orderRequest.getNote(), orderRequest.getTotal());
+        Order order =
+                new Order(
+                        customer.getEmail(),
+                        customer.getName(),
+                        customer.getAddress(),
+                        customer.getPhone(),
+                        orderRequest.getNote(),
+                        orderRequest.getTotal(),
+                        orderRequest.getUserId()
+                );
         int orderID = orderDAO.save(order);
 
         for (LineItem item : orderRequest.getLineItems()) {
@@ -73,6 +82,16 @@ public class OrderServiceImpl implements OrderService {
         order.setUpdatedDate(new Date());
         order.setUpdatedByUser(SecurityContextHolder.getContext().getAuthentication().getName());
         return mapEntity2Modal(orderDAO.merge(order));
+    }
+
+    @Override
+    public List<OrderResponse> fetchByUserId(int userId) {
+        List<Order> orders = orderDAO.findByUserId(userId);
+        List<OrderResponse> orderResponses = new ArrayList<>();
+        for (Order order : orders) {
+            orderResponses.add(modelMapper.map(order, OrderResponse.class));
+        }
+        return orderResponses;
     }
 
     private OrderDetailResponse mapEntity2Modal(Order order) {

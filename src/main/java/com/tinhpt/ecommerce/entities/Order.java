@@ -17,12 +17,13 @@ public class Order {
     private String status;
     private Date updatedDate;
     private String updatedByUser;
+    private int userId;
 
     public Order() {
 
     }
 
-    public Order(String customerEmail, String customerName, String customerAddress, String customerPhone, String note, double totalCost) {
+    public Order(String customerEmail, String customerName, String customerAddress, String customerPhone, String note, double totalCost, int userId) {
         this.customerEmail = customerEmail;
         this.customerName = customerName;
         this.customerAddress = customerAddress;
@@ -31,11 +32,12 @@ public class Order {
         this.totalCost = totalCost;
         this.createdDate = new Date();
         this.status = "PENDING";
+        this.userId = userId;
     }
 
     @Id
-    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     public int getId() {
         return id;
     }
@@ -144,6 +146,16 @@ public class Order {
         this.updatedByUser = updatedByUser;
     }
 
+    @Basic
+    @Column(name = "user_id", nullable = false)
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -153,6 +165,7 @@ public class Order {
 
         if (id != order.id) return false;
         if (Double.compare(order.totalCost, totalCost) != 0) return false;
+        if (userId != order.userId) return false;
         if (customerEmail != null ? !customerEmail.equals(order.customerEmail) : order.customerEmail != null)
             return false;
         if (customerName != null ? !customerName.equals(order.customerName) : order.customerName != null) return false;
@@ -186,6 +199,7 @@ public class Order {
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (updatedDate != null ? updatedDate.hashCode() : 0);
         result = 31 * result + (updatedByUser != null ? updatedByUser.hashCode() : 0);
+        result = 31 * result + userId;
         return result;
     }
 }

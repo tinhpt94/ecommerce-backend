@@ -10,6 +10,7 @@ public interface OrderDAO {
     void update(Order order);
     Order findById(Integer id);
 
+    List<Order> findByUserId(int userId);
     Order merge(Order order);
     Integer save(Order order);
 }

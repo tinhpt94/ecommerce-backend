@@ -8,6 +8,7 @@ public interface UserDAO {
     List<User> findAll();
     User findByUsername(String username);
 
+    User findById(Integer id);
     User persist(User user);
     User findByUserNamePassword(String userName, String password);
 }

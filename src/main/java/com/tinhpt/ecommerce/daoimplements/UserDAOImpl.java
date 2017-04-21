@@ -6,11 +6,8 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-/**
- * Created by PhamTinh on 2/17/2017.
- */
 @Repository("userDAO")
-public class UserDAOImpl extends AbstractDAO<User, Long> implements UserDAO {
+public class UserDAOImpl extends AbstractDAO<User, Integer> implements UserDAO {
 
     @Override
     public User findByUserNamePassword(String userName, String password) {

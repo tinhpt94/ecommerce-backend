@@ -1,5 +1,6 @@
 package com.tinhpt.ecommerce.controllers;
 
+import com.tinhpt.ecommerce.models.CommentRequest;
 import com.tinhpt.ecommerce.models.ProductDetailInfo;
 import com.tinhpt.ecommerce.models.ProductRequest;
 import com.tinhpt.ecommerce.services.ProductService;
@@ -95,5 +96,23 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @RequestMapping(value = "/comments", method = RequestMethod.POST)
+    public ResponseEntity create(@RequestBody CommentRequest comment) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(productService.create(comment));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @RequestMapping(value = "/{id}/comments", method = RequestMethod.GET)
+    public ResponseEntity fetchCommentsByProductId(@PathVariable(value = "id") int id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(productService.fetchCommentsByProductId(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 }
