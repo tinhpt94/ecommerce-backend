@@ -112,7 +112,7 @@ public class Product {
     }
 
     @Basic
-    @Column(name = "created_date", nullable = false)
+    @Column(name = "created_date", nullable = false, columnDefinition = "DATETIME")
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -122,7 +122,7 @@ public class Product {
     }
 
     @Basic
-    @Column(name = "updated_date", nullable = true)
+    @Column(name = "updated_date", nullable = true, columnDefinition = "DATETIME")
     public Date getUpdatedDate() {
         return updatedDate;
     }
