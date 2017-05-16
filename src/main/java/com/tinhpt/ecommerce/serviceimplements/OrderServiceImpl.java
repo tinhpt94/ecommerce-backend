@@ -46,10 +46,10 @@ public class OrderServiceImpl implements OrderService {
         int orderID = orderDAO.save(order);
 
         for (LineItem item : orderRequest.getLineItems()) {
-            OrderDetail orderDetail = new OrderDetail(item.getName(), item.getPrice(), item.getQuantity(), item.getCode(), item.getImageUrl(), orderID);
+            OrderDetail orderDetail = new OrderDetail(item.getName(), item.getPrice(), item.getAmount(), item.getCode(), item.getImageUrl(), orderID, item.getDiscount());
             orderDetailDAO.save(orderDetail);
             Product product = productDAO.findByCode(item.getCode());
-            product.setQuantity(product.getQuantity() - item.getQuantity());
+            product.setQuantity(product.getQuantity() - item.getAmount());
             productDAO.update(product);
         }
         return orderID;

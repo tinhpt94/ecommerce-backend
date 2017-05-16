@@ -8,7 +8,8 @@ import lombok.Setter;
 public class LineItem {
     private String name;
     private double price;
-    private int quantity;
+    private int amount;
+    private int discount;
     private String code;
     private String imageUrl;
 }

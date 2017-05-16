@@ -8,21 +8,23 @@ public class OrderDetail {
     private int id;
     private String name;
     private double price;
-    private int quantity;
+    private int amount;
     private String code;
     private String imageUrl;
     private int ordersId;
+    private int discount;
 
     public OrderDetail() {
     }
 
-    public OrderDetail(String name, double price, int quantity, String code, String imageUrl, int ordersId) {
+    public OrderDetail(String name, double price, int amount, String code, String imageUrl, int ordersId, int discount) {
         this.name = name;
         this.price = price;
-        this.quantity = quantity;
+        this.amount = amount;
         this.code = code;
         this.imageUrl = imageUrl;
         this.ordersId = ordersId;
+        this.discount = discount;
     }
 
     @Id
@@ -57,13 +59,13 @@ public class OrderDetail {
     }
 
     @Basic
-    @Column(name = "quantity", nullable = false)
-    public int getQuantity() {
-        return quantity;
+    @Column(name = "amount", nullable = false)
+    public int getAmount() {
+        return amount;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     @Basic
@@ -105,7 +107,7 @@ public class OrderDetail {
 
         if (id != that.id) return false;
         if (Double.compare(that.price, price) != 0) return false;
-        if (quantity != that.quantity) return false;
+        if (amount != that.amount) return false;
         if (ordersId != that.ordersId) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (code != null ? !code.equals(that.code) : that.code != null) return false;
@@ -122,10 +124,20 @@ public class OrderDetail {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         temp = Double.doubleToLongBits(price);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + quantity;
+        result = 31 * result + amount;
         result = 31 * result + (code != null ? code.hashCode() : 0);
         result = 31 * result + (imageUrl != null ? imageUrl.hashCode() : 0);
         result = 31 * result + ordersId;
         return result;
+    }
+
+    @Basic
+    @Column(name = "discount", nullable = false)
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
     }
 }
