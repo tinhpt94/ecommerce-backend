@@ -190,7 +190,10 @@ public class ProductServiceImpl implements ProductService {
                 commentRequest.getProductId()
         );
         commentDAO.persist(comment);
-        return modelMapper.map(comment, CommentResponse.class);
+        CommentResponse commentResponse = modelMapper.map(comment, CommentResponse.class);
+        User user = userDAO.findById(comment.getUserId());
+        commentResponse.setRatedByUser(user.getName());
+        return commentResponse;
     }
 
     @Override
@@ -206,4 +209,6 @@ public class ProductServiceImpl implements ProductService {
         }
         return commentResponses;
     }
+
+
 }

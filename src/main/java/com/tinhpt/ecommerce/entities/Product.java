@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "products", schema = "ecommerce", catalog = "")
+@Table(name = "products", schema = "ecommerce")
 public class Product {
     private int id;
     private String name;
@@ -82,7 +82,7 @@ public class Product {
     }
 
     @Basic
-    @Column(name = "description", nullable = true, length = 4000)
+    @Column(name = "description", nullable = true, length = 10000)
     public String getDescription() {
         return description;
     }
