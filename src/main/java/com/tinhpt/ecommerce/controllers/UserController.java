@@ -17,9 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Created by PhamTinh on 2/17/2017.
- */
 @CrossOrigin(value = "*", maxAge = 3600, allowCredentials = "true")
 @RestController
 @RequestMapping("/api")

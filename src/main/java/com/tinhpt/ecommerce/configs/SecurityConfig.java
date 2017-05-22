@@ -2,6 +2,7 @@ package com.tinhpt.ecommerce.configs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -31,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .headers().disable()
                 .anonymous().disable()
-                .csrf().disable();
+                .csrf().disable()
 //                .formLogin()
 //                    .loginProcessingUrl("/api/login")
 //                    .defaultSuccessUrl("/api/me")
@@ -45,14 +46,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                    .logoutUrl("/api/logout")
 //                    .logoutSuccessUrl("/api/hello")
 //                    .deleteCookies("JSESSIONID")
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers(HttpMethod.POST, "/api/users").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/users/**").hasRole("ADMIN")
-//                //.antMatchers(HttpMethod.GET, "/api/authenticate").authenticated()
-//                .antMatchers(HttpMethod.POST, "/api/products").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.PUT, "/api/products").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.DELETE, "/api/products").hasRole("ADMIN");
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/api/users").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/users/**").hasRole("MANAGER")
+                .antMatchers(HttpMethod.POST, "/api/products").hasRole("MANAGER")
+                .antMatchers(HttpMethod.PUT, "/api/products").hasRole("MANAGER")
+                .antMatchers(HttpMethod.GET, "/api/products/comments").hasRole("USER")
+                .antMatchers(HttpMethod.DELETE, "/api/products").hasRole("MANAGER")
+                .antMatchers(HttpMethod.POST, "/api/orders").hasRole("USER")
+                .antMatchers(HttpMethod.GET, "/api/orders").hasAnyRole("MANAGER", "USER")
+                .antMatchers(HttpMethod.GET, "/api/orders-user").hasRole("USER")
+                .antMatchers(HttpMethod.GET, "/api/orders/**").hasAnyRole("MANAGER", "USER")
+                .antMatchers(HttpMethod.PUT, "/api/orders").hasRole("MANAGER")
+                .antMatchers(HttpMethod.DELETE, "/api/products").hasRole("MANAGER")
+                .antMatchers(HttpMethod.GET, "/api/report").hasRole("MANAGER")
+        ;
     }
 }
 
