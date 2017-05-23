@@ -94,6 +94,16 @@ public class OrderServiceImpl implements OrderService {
         return orderResponses;
     }
 
+    @Override
+    public List<OrderResponse> fetchByDate(Date fromDate, Date toDate) {
+        List<Order> orders = orderDAO.findByDate(fromDate, toDate);
+        List<OrderResponse> orderResponses = new ArrayList<>();
+        for (Order order : orders) {
+            orderResponses.add(modelMapper.map(order, OrderResponse.class));
+        }
+        return orderResponses;
+    }
+
     private OrderDetailResponse mapEntity2Modal(Order order) {
         OrderDetailResponse orderDetailResponse = modelMapper.map(order, OrderDetailResponse.class);
         List<OrderDetail> orderDetails = orderDetailDAO.findByOrderId(orderDetailResponse.getId());

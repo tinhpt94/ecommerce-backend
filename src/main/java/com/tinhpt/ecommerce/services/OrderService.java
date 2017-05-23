@@ -5,6 +5,7 @@ import com.tinhpt.ecommerce.models.OrderRequest;
 import com.tinhpt.ecommerce.models.OrderResponse;
 import com.tinhpt.ecommerce.models.OrderUpdate;
 
+import java.util.Date;
 import java.util.List;
 
 public interface OrderService {
@@ -13,6 +14,7 @@ public interface OrderService {
     OrderDetailResponse updateOrder(OrderUpdate orderUpdate);
     List<OrderResponse> fetchAll();
 
+    List<OrderResponse> fetchByDate(Date fromDate, Date toDate);
     List<OrderResponse> fetchByUserId(int userId);
     OrderDetailResponse fetchById(int id);
 }

@@ -4,8 +4,10 @@ import com.tinhpt.ecommerce.daos.OrderDAO;
 import com.tinhpt.ecommerce.entities.Order;
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository("orderDAO")
@@ -22,6 +24,15 @@ public class OrderDAOImpl extends AbstractDAO<Order, Integer> implements OrderDA
 
     public List<Order> findAll() {
         Criteria criteria = createEntityCriteria();
+        criteria.addOrder(org.hibernate.criterion.Order.desc("createdDate"));
+        return criteria.list();
+    }
+
+    @Override
+    public List<Order> findByDate(Date fromDate, Date toDate) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.ge("createdDate", fromDate));
+        criteria.add(Restrictions.le("createdDate", toDate));
         criteria.addOrder(org.hibernate.criterion.Order.desc("createdDate"));
         return criteria.list();
     }

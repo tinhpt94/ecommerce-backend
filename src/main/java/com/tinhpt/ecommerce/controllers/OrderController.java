@@ -4,8 +4,11 @@ import com.tinhpt.ecommerce.models.OrderRequest;
 import com.tinhpt.ecommerce.models.OrderUpdate;
 import com.tinhpt.ecommerce.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 @CrossOrigin(value = "*", maxAge = 3600, allowCredentials = "true")
 @RestController
@@ -33,9 +36,10 @@ public class OrderController {
     @RequestMapping(value = "orders",
             method = RequestMethod.GET
     )
-    public ResponseEntity fetchAll() {
+    public ResponseEntity fetchByDate(@RequestParam("fromDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date fromDate,
+                                      @RequestParam("toDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date toDate) {
         try {
-            return ResponseEntity.ok(orderService.fetchAll());
+            return ResponseEntity.ok(orderService.fetchByDate(fromDate, toDate));
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
